@@ -36,10 +36,9 @@ def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, 'Registration successful! Welcome to Income Tax Calculator.')
-            return redirect('dashboard')
+            form.save()
+            messages.success(request, 'Account created successfully. Please log in to continue.')
+            return redirect('login')
         else:
             for field, errors in form.errors.items():
                 for error in errors:
