@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 {% block title %}Tax Calculation Result{% endblock %}
 
 {% block content %}
@@ -39,20 +40,19 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-6">
+                    <div class="row mb-3 g-3">
+                        <div class="col-4">
                             <small class="text-muted">Gross Income</small>
-                            <h5>₹{{ comparison.old_regime.gross_income|floatformat:0 }}</h5>
+                            <h6 class="mb-0">₹{{ comparison.old_regime.gross_income|floatformat:0|intcomma }}</h6>
                         </div>
-                        <div class="col-6">
+                        <div class="col-4">
                             <small class="text-muted">Total Deductions</small>
-                            <h5 class="text-success">- ₹{{ comparison.old_regime.deductions.total|floatformat:0 }}</h5>
+                            <h6 class="text-success mb-0">- ₹{{ comparison.old_regime.deductions.total|floatformat:0|intcomma }}</h6>
                         </div>
-                    </div>
-
-                    <div class="bg-light p-3 rounded mb-3">
-                        <small class="text-muted">Taxable Income</small>
-                        <h4 class="mb-0">₹{{ comparison.old_regime.taxable_income|floatformat:0 }}</h4>
+                        <div class="col-4">
+                            <small class="text-muted">Taxable Income</small>
+                            <h6 class="mb-0">₹{{ comparison.old_regime.taxable_income|floatformat:0|intcomma }}</h6>
+                        </div>
                     </div>
 
                     <hr>
@@ -60,11 +60,11 @@
                     <div class="row">
                         <div class="col-6">
                             <small class="text-muted">Tax</small>
-                            <h6>₹{{ comparison.old_regime.tax_before_cess|floatformat:0 }}</h6>
+                            <h6>₹{{ comparison.old_regime.tax_before_cess|floatformat:0|intcomma }}</h6>
                         </div>
                         <div class="col-6">
                             <small class="text-muted">Cess (4%)</small>
-                            <h6>₹{{ comparison.old_regime.cess|floatformat:0 }}</h6>
+                            <h6>₹{{ comparison.old_regime.cess|floatformat:0|intcomma }}</h6>
                         </div>
                     </div>
 
@@ -72,7 +72,7 @@
 
                     <div class="text-center">
                         <small class="text-muted">Total Tax Payable</small>
-                        <h2 class="text-danger mb-0">₹{{ comparison.old_regime.total_tax|floatformat:0 }}</h2>
+                        <h2 class="text-danger mb-0">₹{{ comparison.old_regime.total_tax|floatformat:0|intcomma }}</h2>
                     </div>
                 </div>
             </div>
@@ -95,20 +95,19 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-6">
+                    <div class="row mb-3 g-3">
+                        <div class="col-4">
                             <small class="text-muted">Gross Income</small>
-                            <h5>₹{{ comparison.new_regime.gross_income|floatformat:0 }}</h5>
+                            <h6 class="mb-0">₹{{ comparison.new_regime.gross_income|floatformat:0|intcomma }}</h6>
                         </div>
-                        <div class="col-6">
-                            <small class="text-muted">Standard Deduction</small>
-                            <h5 class="text-success">- ₹{{ comparison.new_regime.deductions.total|floatformat:0 }}</h5>
+                        <div class="col-4">
+                            <small class="text-muted">Total Deductions</small>
+                            <h6 class="text-success mb-0">- ₹{{ comparison.new_regime.deductions.total|floatformat:0|intcomma }}</h6>
                         </div>
-                    </div>
-
-                    <div class="bg-light p-3 rounded mb-3">
-                        <small class="text-muted">Taxable Income</small>
-                        <h4 class="mb-0">₹{{ comparison.new_regime.taxable_income|floatformat:0 }}</h4>
+                        <div class="col-4">
+                            <small class="text-muted">Taxable Income</small>
+                            <h6 class="mb-0">₹{{ comparison.new_regime.taxable_income|floatformat:0|intcomma }}</h6>
+                        </div>
                     </div>
 
                     <hr>
@@ -116,11 +115,11 @@
                     <div class="row">
                         <div class="col-6">
                             <small class="text-muted">Tax</small>
-                            <h6>₹{{ comparison.new_regime.tax_before_cess|floatformat:0 }}</h6>
+                            <h6>₹{{ comparison.new_regime.tax_before_cess|floatformat:0|intcomma }}</h6>
                         </div>
                         <div class="col-6">
                             <small class="text-muted">Cess (4%)</small>
-                            <h6>₹{{ comparison.new_regime.cess|floatformat:0 }}</h6>
+                            <h6>₹{{ comparison.new_regime.cess|floatformat:0|intcomma }}</h6>
                         </div>
                     </div>
 
@@ -128,7 +127,7 @@
 
                     <div class="text-center">
                         <small class="text-muted">Total Tax Payable</small>
-                        <h2 class="text-success mb-0">₹{{ comparison.new_regime.total_tax|floatformat:0 }}</h2>
+                        <h2 class="text-success mb-0">₹{{ comparison.new_regime.total_tax|floatformat:0|intcomma }}</h2>
                     </div>
                 </div>
             </div>
@@ -150,7 +149,7 @@
                         {% endif %}
                     </h4>
                     <p class="lead mb-0">
-                        You save <span class="fw-bold">₹{{ comparison.tax_savings|floatformat:0 }}</span> by choosing
+                        You save <span class="fw-bold">₹{{ comparison.tax_savings|floatformat:0|intcomma }}</span> by choosing
                         the
                         {% if comparison.recommended_regime == 'new' %}New{% else %}Old{% endif %} Regime!
                     </p>
@@ -171,19 +170,19 @@
                         <div class="col-md-4">
                             <div class="p-3 bg-light rounded">
                                 <small class="text-muted">Total Income</small>
-                                <h5 class="mb-0">₹{{ comparison.new_regime.gross_income|floatformat:0 }}</h5>
+                                <h5 class="mb-0">₹{{ comparison.new_regime.gross_income|floatformat:0|intcomma }}</h5>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="p-3 bg-light rounded">
                                 <small class="text-muted">Taxable Income</small>
-                                <h5 class="mb-0">₹{{ comparison.new_regime.taxable_income|floatformat:0 }}</h5>
+                                <h5 class="mb-0">₹{{ comparison.new_regime.taxable_income|floatformat:0|intcomma }}</h5>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="p-3 bg-light rounded">
                                 <small class="text-muted">Total Deductions</small>
-                                <h5 class="mb-0">₹{{ comparison.new_regime.deductions.total|floatformat:0 }}</h5>
+                                <h5 class="mb-0">₹{{ comparison.new_regime.deductions.total|floatformat:0|intcomma }}</h5>
                             </div>
                         </div>
                     </div>
@@ -193,14 +192,14 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <h6 class="text-muted mb-2">Standard Deduction (New Regime)</h6>
-                            <p class="mb-1">₹{{ comparison.new_regime.deductions.standard_deduction|floatformat:0|default:"0" }}</p>
+                            <p class="mb-1">₹{{ comparison.new_regime.deductions.standard_deduction|floatformat:0|intcomma|default:"0" }}</p>
                             <small class="text-muted">Fixed standard deduction for salaried income.</small>
                         </div>
                         <div class="col-md-6">
                             <h6 class="text-muted mb-2">Other allowed deductions</h6>
                             <ul class="list-unstyled mb-0 text-muted">
-                                <li>Employer NPS (80CCD(2)): ₹{{ comparison.new_regime.deductions.employer_nps_contribution|floatformat:0|default:"0" }}</li>
-                                <li>Professional Tax: ₹{{ comparison.new_regime.deductions.professional_tax|floatformat:0|default:"0" }}</li>
+                                <li>Employer NPS (80CCD(2)): ₹{{ comparison.new_regime.deductions.employer_nps_contribution|floatformat:0|intcomma|default:"0" }}</li>
+                                <li>Professional Tax: ₹{{ comparison.new_regime.deductions.professional_tax|floatformat:0|intcomma|default:"0" }}</li>
                             </ul>
                         </div>
                     </div>
@@ -222,31 +221,31 @@
                         <tbody>
                             <tr>
                                 <td>Basic Salary</td>
-                                <td class="text-end">₹{{ salary_detail.basic_salary|floatformat:0 }}</td>
+                            <td class="text-end">₹{{ salary_detail.basic_salary|floatformat:0|intcomma }}</td>
                             </tr>
                             <tr>
                                 <td>HRA Received</td>
-                                <td class="text-end">₹{{ salary_detail.hra_received|floatformat:0 }}</td>
+                            <td class="text-end">₹{{ salary_detail.hra_received|floatformat:0|intcomma }}</td>
                             </tr>
                             <tr>
                                 <td>Special Allowance</td>
-                                <td class="text-end">₹{{ salary_detail.special_allowance|floatformat:0 }}</td>
+                            <td class="text-end">₹{{ salary_detail.special_allowance|floatformat:0|intcomma }}</td>
                             </tr>
                             <tr>
                                 <td>Leave Travel Allowance</td>
-                                <td class="text-end">₹{{ salary_detail.lta|floatformat:0 }}</td>
+                            <td class="text-end">₹{{ salary_detail.lta|floatformat:0|intcomma }}</td>
                             </tr>
                             <tr>
                                 <td>Bonus / Incentive</td>
-                                <td class="text-end">₹{{ salary_detail.bonus|floatformat:0 }}</td>
+                            <td class="text-end">₹{{ salary_detail.bonus|floatformat:0|intcomma }}</td>
                             </tr>
                             <tr>
                                 <td>Other Income</td>
-                                <td class="text-end">₹{{ salary_detail.other_income|floatformat:0 }}</td>
+                            <td class="text-end">₹{{ salary_detail.other_income|floatformat:0|intcomma }}</td>
                             </tr>
                             <tr class="table-primary">
                                 <td class="fw-bold">Gross Salary</td>
-                                <td class="text-end fw-bold">₹{{ salary_detail.gross_salary|floatformat:0 }}</td>
+                            <td class="text-end fw-bold">₹{{ salary_detail.gross_salary|floatformat:0|intcomma }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -265,54 +264,54 @@
                         <tbody>
                             <tr>
                                 <td>Standard Deduction</td>
-                                <td class="text-end">₹{{ comparison.old_regime.deductions.standard_deduction|floatformat:0|default:"0" }}</td>
+                                <td class="text-end">₹{{ comparison.old_regime.deductions.standard_deduction|floatformat:0|intcomma|default:"0" }}</td>
                             </tr>
                             <tr>
                                 <td>HRA Exemption</td>
-                                <td class="text-end">₹{{ comparison.old_regime.deductions.hra_exemption|floatformat:0 }}
+                                <td class="text-end">₹{{ comparison.old_regime.deductions.hra_exemption|floatformat:0|intcomma }}
                                 </td>
                             </tr>
                             <tr>
                                 <td>Section 80C</td>
-                                <td class="text-end">₹{{ comparison.old_regime.deductions.section_80c|floatformat:0 }}
+                                <td class="text-end">₹{{ comparison.old_regime.deductions.section_80c|floatformat:0|intcomma }}
                                 </td>
                             </tr>
                             <tr>
                                 <td>Section 80D</td>
-                                <td class="text-end">₹{{ comparison.old_regime.deductions.section_80d|floatformat:0 }}
+                                <td class="text-end">₹{{ comparison.old_regime.deductions.section_80d|floatformat:0|intcomma }}
                                 </td>
                             </tr>
                             <tr>
                                 <td>Section 80E</td>
-                                <td class="text-end">₹{{ comparison.old_regime.deductions.section_80e|floatformat:0 }}
+                                <td class="text-end">₹{{ comparison.old_regime.deductions.section_80e|floatformat:0|intcomma }}
                                 </td>
                             </tr>
                             <tr>
                                 <td>Section 80G</td>
-                                <td class="text-end">₹{{ comparison.old_regime.deductions.section_80g|floatformat:0 }}
+                                <td class="text-end">₹{{ comparison.old_regime.deductions.section_80g|floatformat:0|intcomma }}
                                 </td>
                             </tr>
                             <tr>
                                 <td>Section 24 (Home Loan)</td>
-                                <td class="text-end">₹{{ comparison.old_regime.deductions.section_24|floatformat:0 }}
+                                <td class="text-end">₹{{ comparison.old_regime.deductions.section_24|floatformat:0|intcomma }}
                                 </td>
                             </tr>
                             <tr>
                                 <td>Section 80CCD (NPS)</td>
-                                <td class="text-end">₹{{ comparison.old_regime.deductions.section_80ccd|floatformat:0 }}
+                                <td class="text-end">₹{{ comparison.old_regime.deductions.section_80ccd|floatformat:0|intcomma }}
                                 </td>
                             </tr>
                             <tr>
                                 <td>Employer NPS (80CCD(2))</td>
-                                <td class="text-end">₹{{ comparison.old_regime.deductions.employer_nps_contribution|floatformat:0|default:"0" }}</td>
+                                <td class="text-end">₹{{ comparison.old_regime.deductions.employer_nps_contribution|floatformat:0|intcomma|default:"0" }}</td>
                             </tr>
                             <tr>
                                 <td>Professional Tax</td>
-                                <td class="text-end">₹{{ comparison.old_regime.deductions.professional_tax|floatformat:0|default:"0" }}</td>
+                                <td class="text-end">₹{{ comparison.old_regime.deductions.professional_tax|floatformat:0|intcomma|default:"0" }}</td>
                             </tr>
                             <tr class="table-success">
                                 <td class="fw-bold">Total Deductions</td>
-                                <td class="text-end fw-bold">₹{{ comparison.old_regime.deductions.total|floatformat:0 }}
+                                <td class="text-end fw-bold">₹{{ comparison.old_regime.deductions.total|floatformat:0|intcomma }}
                                 </td>
                             </tr>
                         </tbody>

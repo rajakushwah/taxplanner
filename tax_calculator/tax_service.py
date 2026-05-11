@@ -34,22 +34,23 @@ class TaxCalculator:
         (Decimal('999999999'), Decimal('0.30')), # Above 10L - 30%
     ]
     
-    # New Regime Tax Slabs FY 2024-25 (Same for all age groups)
+    # New Regime Tax Slabs FY 2025-26 (Same for all age groups)
     NEW_REGIME_SLABS = [
-        (Decimal('300000'), Decimal('0')),      # Up to 3L - Nil
-        (Decimal('700000'), Decimal('0.05')),   # 3L to 7L - 5%
-        (Decimal('1000000'), Decimal('0.10')),  # 7L to 10L - 10%
-        (Decimal('1200000'), Decimal('0.15')),  # 10L to 12L - 15%
-        (Decimal('1500000'), Decimal('0.20')),  # 12L to 15L - 20%
-        (Decimal('999999999'), Decimal('0.30')), # Above 15L - 30%
+        (Decimal('400000'), Decimal('0')),      # Up to 4L - Nil
+        (Decimal('800000'), Decimal('0.05')),   # 4L to 8L - 5%
+        (Decimal('1200000'), Decimal('0.10')),  # 8L to 12L - 10%
+        (Decimal('1600000'), Decimal('0.15')),  # 12L to 16L - 15%
+        (Decimal('2000000'), Decimal('0.20')),  # 16L to 20L - 20%
+        (Decimal('2400000'), Decimal('0.25')),  # 20L to 24L - 25%
+        (Decimal('999999999'), Decimal('0.30')), # Above 24L - 30%
     ]
     
     # Rebate under Section 87A
     OLD_REGIME_REBATE_LIMIT = Decimal('500000')  # 5 Lakh
     OLD_REGIME_REBATE_AMOUNT = Decimal('12500')
     
-    NEW_REGIME_REBATE_LIMIT = Decimal('700000')  # 7 Lakh
-    NEW_REGIME_REBATE_AMOUNT = Decimal('25000')
+    NEW_REGIME_REBATE_LIMIT = Decimal('1200000')  # 12 Lakh
+    NEW_REGIME_REBATE_AMOUNT = Decimal('60000')
     
     # Standard Deduction
     STANDARD_DEDUCTION_OLD = Decimal('50000')
