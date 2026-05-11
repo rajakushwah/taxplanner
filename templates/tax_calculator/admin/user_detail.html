@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %}User Details - Admin{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
+            <li class="breadcrumb-item active">User Details</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- User Info Card -->
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="mb-0"><i class="bi bi-person me-2"></i>User Information</h5>
+                </div>
+                <div class="card-body text-center p-4">
+                    <div class="profile-avatar bg-secondary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center"
+                        style="width: 80px; height: 80px; font-size: 2rem;">
+                        {{ user_detail.first_name|slice:":1"|upper }}{{ user_detail.last_name|slice:":1"|upper }}
+                    </div>
+                    <h4 class="mb-1">{{ user_detail.get_full_name|default:"-" }}</h4>
+                    <p class="text-muted">{{ user_detail.email }}</p>
+
+                    <hr>
+
+                    <div class="text-start">
+                        <p class="mb-2">
+                            <strong><i class="bi bi-phone text-muted me-2"></i>Phone:</strong><br>
+                            {{ user_detail.phone_number|default:"Not provided" }}
+                        </p>
+                        <p class="mb-2">
+                            <strong><i class="bi bi-credit-card text-muted me-2"></i>PAN:</strong><br>
+                            {{ user_detail.pan_number|default:"Not provided" }}
+                        </p>
+                        <p class="mb-2">
+                            <strong><i class="bi bi-calendar text-muted me-2"></i>Joined:</strong><br>
+                            {{ user_detail.created_at|date:"d M Y, H:i" }}
+                        </p>
+                        <p class="mb-0">
+                            <strong><i class="bi bi-clock text-muted me-2"></i>Last Login:</strong><br>
+                            {{ user_detail.last_login|date:"d M Y, H:i"|default:"Never" }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Salary Records -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0"><i class="bi bi-table me-2"></i>Tax Calculations ({{ salary_records.count }})</h5>
+                </div>
+                <div class="card-body">
+                    {% if salary_records %}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Financial Year</th>
+                                    <th>Gross Salary</th>
+                                    <th>Old Regime</th>
+                                    <th>New Regime</th>
+                                    <th>Recommended</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in salary_records %}
+                                <tr>
+                                    <td><span class="badge bg-secondary">{{ record.financial_year }}</span></td>
+                                    <td>₹{{ record.gross_salary|floatformat:0 }}</td>
+                                    {% if record.tax_calculation %}
+                                    <td class="text-danger">₹{{ record.tax_calculation.old_regime_total_tax|floatformat:0 }}</td>
+                                    <td class="text-success">₹{{ record.tax_calculation.new_regime_total_tax|floatformat:0 }}</td>
+                                    <td>
+                                        {% if record.tax_calculation.recommended_regime == 'new' %}
+                                        <span class="badge bg-success">New</span>
+                                        {% else %}
+                                        <span class="badge bg-warning text-dark">Old</span>
+                                        {% endif %}
+                                    </td>
+                                    {% else %}
+                                    <td colspan="3" class="text-muted">Pending</td>
+                                    {% endif %}
+                                    <td>
+                                        <a href="{% url 'admin_view_calculation' record.pk %}"
+                                            class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-calculator text-muted" style="font-size: 3rem;"></i>
+                        <h5 class="text-muted mt-3">No tax calculations yet</h5>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Back to Admin Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

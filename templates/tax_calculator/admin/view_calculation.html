@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% block title %}View Calculation - Admin{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_user_detail' salary_detail.user.id %}">{{ salary_detail.user.email }}</a></li>
+            <li class="breadcrumb-item active">Tax Calculation</li>
+        </ol>
+    </nav>
+
+    <!-- User Banner -->
+    <div class="alert alert-info d-flex align-items-center mb-4">
+        <i class="bi bi-person-badge me-3 fs-4"></i>
+        <div>
+            <strong>Viewing calculation for:</strong> {{ salary_detail.user.get_full_name }} ({{ salary_detail.user.email }})<br>
+            <small>Financial Year: {{ salary_detail.financial_year }} | Calculated: {{ tax_calculation.calculated_at|date:"d M Y, H:i"|default:"-" }}</small>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-4 mb-4">
+        <!-- Old Regime Card -->
+        <div class="col-md-6">
+            <div
+                class="card border-0 shadow h-100 {% if comparison.recommended_regime == 'old' %}border-start border-4 border-success{% endif %}">
+                <div class="card-header bg-danger bg-opacity-10 py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 text-danger">
+                            <i class="bi bi-clock-history me-2"></i>Old Tax Regime
+                        </h5>
+                        {% if comparison.recommended_regime == 'old' %}
+                        <span class="badge bg-success">Recommended</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <small class="text-muted">Gross Income</small>
+                            <h5>₹{{ comparison.old_regime.gross_income|floatformat:0 }}</h5>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted">Total Deductions</small>
+                            <h5 class="text-success">- ₹{{ comparison.old_regime.deductions.total|floatformat:0 }}</h5>
+                        </div>
+                    </div>
+
+                    <div class="bg-light p-3 rounded mb-3">
+                        <small class="text-muted">Taxable Income</small>
+                        <h4 class="mb-0">₹{{ comparison.old_regime.taxable_income|floatformat:0 }}</h4>
+                    </div>
+
+                    <hr>
+
+                    <div class="text-center">
+                        <small class="text-muted">Total Tax Payable</small>
+                        <h2 class="text-danger mb-0">₹{{ comparison.old_regime.total_tax|floatformat:0 }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Regime Card -->
+        <div class="col-md-6">
+            <div
+                class="card border-0 shadow h-100 {% if comparison.recommended_regime == 'new' %}border-start border-4 border-success{% endif %}">
+                <div class="card-header bg-success bg-opacity-10 py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 text-success">
+                            <i class="bi bi-stars me-2"></i>New Tax Regime
+                        </h5>
+                        {% if comparison.recommended_regime == 'new' %}
+                        <span class="badge bg-success">Recommended</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <small class="text-muted">Gross Income</small>
+                            <h5>₹{{ comparison.new_regime.gross_income|floatformat:0 }}</h5>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted">Standard Deduction</small>
+                            <h5 class="text-success">- ₹{{ comparison.new_regime.deductions.total|floatformat:0 }}</h5>
+                        </div>
+                    </div>
+
+                    <div class="bg-light p-3 rounded mb-3">
+                        <small class="text-muted">Taxable Income</small>
+                        <h4 class="mb-0">₹{{ comparison.new_regime.taxable_income|floatformat:0 }}</h4>
+                    </div>
+
+                    <hr>
+
+                    <div class="text-center">
+                        <small class="text-muted">Total Tax Payable</small>
+                        <h2 class="text-success mb-0">₹{{ comparison.new_regime.total_tax|floatformat:0 }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Savings Banner -->
+    <div class="card border-0 shadow bg-gradient-success text-white mb-4">
+        <div class="card-body text-center py-4">
+            <h4 class="mb-2">
+                Tax Savings: <span class="fw-bold">₹{{ comparison.tax_savings|floatformat:0 }}</span>
+            </h4>
+            <p class="mb-0">
+                by choosing the {% if comparison.recommended_regime == 'new' %}New{% else %}Old{% endif %} Tax Regime
+            </p>
+        </div>
+    </div>
+
+    <!-- Detailed Breakdown -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0"><i class="bi bi-cash-stack text-success me-2"></i>Income Details</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tr>
+                            <td>Basic Salary</td>
+                            <td class="text-end">₹{{ salary_detail.basic_salary|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>HRA</td>
+                            <td class="text-end">₹{{ salary_detail.hra_received|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>Special Allowance</td>
+                            <td class="text-end">₹{{ salary_detail.special_allowance|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>LTA</td>
+                            <td class="text-end">₹{{ salary_detail.lta|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>Bonus</td>
+                            <td class="text-end">₹{{ salary_detail.bonus|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>Other Income</td>
+                            <td class="text-end">₹{{ salary_detail.other_income|floatformat:0 }}</td>
+                        </tr>
+                        <tr class="table-primary">
+                            <td><strong>Gross Salary</strong></td>
+                            <td class="text-end"><strong>₹{{ salary_detail.gross_salary|floatformat:0 }}</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0"><i class="bi bi-piggy-bank text-warning me-2"></i>Deductions Claimed</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tr>
+                            <td>Section 80C</td>
+                            <td class="text-end">₹{{ salary_detail.deduction_80c|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>Section 80D</td>
+                            <td class="text-end">₹{{ salary_detail.deduction_80d|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>Section 80E</td>
+                            <td class="text-end">₹{{ salary_detail.deduction_80e|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>Section 80G</td>
+                            <td class="text-end">₹{{ salary_detail.deduction_80g|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>Home Loan Interest</td>
+                            <td class="text-end">₹{{ salary_detail.home_loan_interest|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>NPS Contribution</td>
+                            <td class="text-end">₹{{ salary_detail.nps_contribution|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>Employer NPS Contribution</td>
+                            <td class="text-end">₹{{ salary_detail.employer_nps_contribution|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>Professional Tax</td>
+                            <td class="text-end">₹{{ salary_detail.professional_tax|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>Rent Paid</td>
+                            <td class="text-end">₹{{ salary_detail.rent_paid|floatformat:0 }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{% url 'admin_user_detail' salary_detail.user.id %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Back to User Details
+        </a>
+    </div>
+</div>
+{% endblock %}

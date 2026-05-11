@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% block title %}Edit Salary Details{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Edit Salary</li>
+                </ol>
+            </nav>
+
+            <div class="card border-0 shadow">
+                <div class="card-header bg-warning py-3">
+                    <h4 class="mb-0">
+                        <i class="bi bi-pencil-square me-2"></i>Edit Salary Details
+                    </h4>
+                    <small>{{ salary_detail.financial_year }}</small>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        <!-- Basic Details -->
+                        <div class="section-header mb-3">
+                            <h5 class="text-primary"><i class="bi bi-person me-2"></i>Basic Details</h5>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Financial Year</label>
+                                <input type="text" class="form-control" value="{{ salary_detail.financial_year }}"
+                                    disabled>
+                                <input type="hidden" name="financial_year"
+                                    value="{{ salary_detail.financial_year.id }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_age_group" class="form-label">Age Group *</label>
+                                {{ form.age_group }}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Income Components -->
+                        <div class="section-header mb-3">
+                            <h5 class="text-success"><i class="bi bi-cash-stack me-2"></i>Income Components (Annual)
+                            </h5>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="id_basic_salary" class="form-label">Basic Salary *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.basic_salary }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_hra_received" class="form-label">HRA Received</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.hra_received }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_special_allowance" class="form-label">Special Allowance</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.special_allowance }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_lta" class="form-label">Leave Travel Allowance (LTA)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.lta }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_bonus" class="form-label">Bonus / Incentive</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.bonus }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_other_income" class="form-label">Other Income</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.other_income }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- HRA Details -->
+                        <div class="section-header mb-3">
+                            <h5 class="text-info"><i class="bi bi-house me-2"></i>HRA Exemption Details</h5>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="id_rent_paid" class="form-label">Annual Rent Paid</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.rent_paid }}
+                                </div>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-end">
+                                <div class="form-check">
+                                    {{ form.is_metro_city }}
+                                    <label class="form-check-label" for="id_is_metro_city">
+                                        Living in Metro City? (Delhi, Mumbai, Kolkata, Chennai, Bengaluru, Hyderabad, Pune, Ahmedabad)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Deductions -->
+                        <div class="section-header mb-3">
+                            <h5 class="text-warning"><i class="bi bi-piggy-bank me-2"></i>Deductions (Old Regime Only)
+                            </h5>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="id_deduction_80c" class="form-label">Section 80C</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.deduction_80c }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_deduction_80d" class="form-label">Section 80D</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.deduction_80d }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_deduction_80e" class="form-label">Section 80E</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.deduction_80e }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_deduction_80g" class="form-label">Section 80G</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.deduction_80g }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_home_loan_interest" class="form-label">Section 24 (Home Loan)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.home_loan_interest }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_nps_contribution" class="form-label">Section 80CCD (NPS)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.nps_contribution }}
+                                </div>
+                                <small class="text-muted">Additional employee (voluntary) contribution</small>
+                                <small class="text-muted d-block">* Old Regime: Up to ₹50,000 under 80CCD(1B)</small>
+                                <small class="text-muted d-block">* New Regime: Not tax-deductible under 80CCD(1B)</small>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="section-header mb-3">
+                            <h5 class="text-info"><i class="bi bi-briefcase me-2"></i>Deductions (Both Regimes)</h5>
+                            <small class="text-muted">These deductions apply to both Old and New Tax Regime</small>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="id_employer_nps_contribution" class="form-label">Employer NPS (80CCD(2))</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.employer_nps_contribution }}
+                                </div>
+                                <small class="text-muted">Employer contribution to NPS</small>
+                                <small class="text-muted d-block">* Old Regime: 10% of salary (private), 14% (govt)</small>
+                                <small class="text-muted d-block">* New Regime: Up to 14% of salary (Basic + DA) for all employees</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_professional_tax" class="form-label">Professional Tax</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.professional_tax }}
+                                </div>
+                                <small class="text-muted">Deducted by employer</small>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-check-circle me-2"></i>Update & Recalculate
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

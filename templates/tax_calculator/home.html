@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% block title %}Income Tax Calculator India - FY 2024-25{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-primary text-white py-5">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    Calculate Your <span class="text-warning">Income Tax</span> in Minutes
+                </h1>
+                <p class="lead mb-4">
+                    India's most trusted income tax calculator for FY 2024-25.
+                    Compare Old vs New Tax Regime and find out which saves you more money.
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'calculate_tax' %}" class="btn btn-warning btn-lg px-4">
+                        <i class="bi bi-calculator me-2"></i>Calculate Now
+                    </a>
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-light btn-lg px-4">
+                        <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                    </a>
+                    {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-warning btn-lg px-4">
+                        <i class="bi bi-person-plus me-2"></i>Get Started Free
+                    </a>
+                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg px-4">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 text-center mt-5 mt-lg-0">
+                <div class="hero-image">
+                    <div class="tax-card shadow-lg p-4 bg-white text-dark rounded-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge bg-success px-3 py-2">FY 2024-25</span>
+                            <i class="bi bi-patch-check-fill text-primary fs-4"></i>
+                        </div>
+                        <h5 class="text-muted mb-2">Sample Calculation</h5>
+                        <div class="row g-3 text-start">
+                            <div class="col-6">
+                                <small class="text-muted">Old Regime</small>
+                                <h4 class="text-danger mb-0">₹1,04,000</h4>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">New Regime</small>
+                                <h4 class="text-success mb-0">₹78,000</h4>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="text-center">
+                            <small class="text-muted">You Save</small>
+                            <h3 class="text-success mb-0"><i class="bi bi-arrow-down-circle me-2"></i>₹26,000</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Why Choose Our Tax Calculator?</h2>
+            <p class="text-muted">Accurate, secure, and easy to use</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-primary bg-opacity-10 text-primary rounded-circle mb-3 mx-auto">
+                            <i class="bi bi-shield-lock-fill fs-3"></i>
+                        </div>
+                        <h5 class="card-title">100% Secure</h5>
+                        <p class="card-text text-muted">Your financial data is encrypted and never shared. Only you and
+                            authorized admins can access your information.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-success bg-opacity-10 text-success rounded-circle mb-3 mx-auto">
+                            <i class="bi bi-graph-up-arrow fs-3"></i>
+                        </div>
+                        <h5 class="card-title">Compare Tax Regimes</h5>
+                        <p class="card-text text-muted">Instantly compare Old vs New Tax Regime and get personalized
+                            recommendations to minimize your tax.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-warning bg-opacity-10 text-warning rounded-circle mb-3 mx-auto">
+                            <i class="bi bi-lightning-fill fs-3"></i>
+                        </div>
+                        <h5 class="card-title">Instant Results</h5>
+                        <p class="card-text text-muted">Get detailed tax breakdown within seconds. Save your
+                            calculations and access them anytime.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tax Slabs Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Income Tax Slabs FY 2025-26</h2>
+            <p class="text-muted">Compare tax rates under both regimes</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Old Regime -->
+            <div class="col-lg-6">
+                <div class="card border-0 shadow h-100">
+                    <div class="card-header bg-danger text-white py-3">
+                        <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Old Tax Regime</h5>
+                        <small>With Deductions (80C, 80D, HRA, etc.)</small>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Income Slab</th>
+                                    <th>Tax Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Up to ₹2,50,000</td>
+                                    <td><span class="badge bg-success">NIL</span></td>
+                                </tr>
+                                <tr>
+                                    <td>₹2,50,001 - ₹5,00,000</td>
+                                    <td>5%</td>
+                                </tr>
+                                <tr>
+                                    <td>₹5,00,001 - ₹10,00,000</td>
+                                    <td>20%</td>
+                                </tr>
+                                <tr>
+                                    <td>Above ₹10,00,000</td>
+                                    <td>30%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="mt-3 p-3 bg-light rounded">
+                            <small class="text-muted">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Rebate u/s 87A: Tax rebate up to ₹12,500 if taxable income ≤ ₹5 Lakh
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Regime -->
+            <div class="col-lg-6">
+                <div class="card border-0 shadow h-100">
+                    <div class="card-header bg-success text-white py-3">
+                        <h5 class="mb-0"><i class="bi bi-stars me-2"></i>New Tax Regime (Default)</h5>
+                        <small>Lower Rates, Limited Deductions</small>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Income Slab</th>
+                                    <th>Tax Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Up to ₹4,00,000</td>
+                                    <td><span class="badge bg-success">NIL</span></td>
+                                </tr>
+                                <tr>
+                                    <td>₹4,00,001 - ₹8,00,000</td>
+                                    <td>5%</td>
+                                </tr>
+                                <tr>
+                                    <td>₹8,00,001 - ₹12,00,000</td>
+                                    <td>10%</td>
+                                </tr>
+                                <tr>
+                                    <td>₹12,00,001 - ₹16,00,000</td>
+                                    <td>15%</td>
+                                </tr>
+                                <tr>
+                                    <td>₹16,00,001 - ₹20,00,000</td>
+                                    <td>20%</td>
+                                </tr>
+                                <tr>
+                                    <td>₹20,00,001 - ₹24,00,000</td>
+                                    <td>25%</td>
+                                </tr>
+                                <tr>
+                                    <td>Above ₹24,00,000</td>
+                                    <td>30%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="mt-3 p-3 bg-light rounded">
+                            <small class="text-muted">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Rebate u/s 87A: Tax rebate up to ₹60,000 if taxable income ≤ ₹12 Lakh
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-3">Ready to Calculate Your Tax?</h2>
+        <p class="lead mb-4">Join thousands of users who trust our calculator for accurate tax planning</p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'calculate_tax' %}" class="btn btn-warning btn-lg px-5">
+            <i class="bi bi-calculator me-2"></i>Calculate Now
+        </a>
+        {% else %}
+        <a href="{% url 'register' %}" class="btn btn-warning btn-lg px-5">
+            <i class="bi bi-person-plus me-2"></i>Create Free Account
+        </a>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

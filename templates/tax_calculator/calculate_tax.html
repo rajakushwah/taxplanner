@@ -1,0 +1,326 @@
+{% extends 'base.html' %}
+{% block title %}Calculate Income Tax{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Main Form Card -->
+            <div class="card border-0 shadow">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="mb-0">
+                        <i class="bi bi-calculator me-2"></i>Income Tax Calculator FY 2024-25
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" id="taxForm" novalidate>
+                        {% csrf_token %}
+
+                        <!-- Basic Details -->
+                        <div class="section-header mb-3">
+                            <h5 class="text-primary"><i class="bi bi-person me-2"></i>Basic Details</h5>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="id_financial_year" class="form-label">Financial Year *</label>
+                                {{ form.financial_year }}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_age_group" class="form-label">Age Group *</label>
+                                {{ form.age_group }}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Income Components -->
+                        <div class="section-header mb-3">
+                            <h5 class="text-success"><i class="bi bi-cash-stack me-2"></i>Income Components (Annual)
+                            </h5>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="id_basic_salary" class="form-label">Basic Salary *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.basic_salary }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_hra_received" class="form-label">HRA Received</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.hra_received }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_special_allowance" class="form-label">Special Allowance</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.special_allowance }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_lta" class="form-label">Leave Travel Allowance (LTA)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.lta }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_bonus" class="form-label">Bonus / Incentive</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.bonus }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_other_income" class="form-label">Other Income</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.other_income }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- HRA Details -->
+                        <div class="section-header mb-3">
+                            <h5 class="text-info"><i class="bi bi-house me-2"></i>HRA Exemption Details</h5>
+                            <small class="text-muted">For calculating HRA exemption under old regime</small>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="id_rent_paid" class="form-label">Annual Rent Paid</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.rent_paid }}
+                                </div>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-end">
+                                <div class="form-check">
+                                    {{ form.is_metro_city }}
+                                    <label class="form-check-label" for="id_is_metro_city">
+                                        Living in Metro City? (Delhi, Mumbai, Kolkata, Chennai, Bengaluru, Hyderabad, Pune, Ahmedabad)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Deductions - Old Regime -->
+                        <div class="section-header mb-3">
+                            <h5 class="text-warning"><i class="bi bi-piggy-bank me-2"></i>Deductions (Old Regime Only)
+                            </h5>
+                            <small class="text-muted">These deductions apply only to Old Tax Regime</small>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="id_deduction_80c" class="form-label">
+                                    Section 80C <span class="badge bg-secondary">Max ₹1.5L</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.deduction_80c }}
+                                </div>
+                                <small class="text-muted">PPF, ELSS, LIC Premium, EPF, etc.</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_deduction_80d" class="form-label">
+                                    Section 80D <span class="badge bg-secondary">Max ₹1L</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.deduction_80d }}
+                                </div>
+                                <small class="text-muted">Health Insurance Premium</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_deduction_80e" class="form-label">Section 80E</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.deduction_80e }}
+                                </div>
+                                <small class="text-muted">Education Loan Interest (No limit)</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_deduction_80g" class="form-label">Section 80G</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.deduction_80g }}
+                                </div>
+                                <small class="text-muted">Donations to Charitable Institutions</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_home_loan_interest" class="form-label">
+                                    Section 24 <span class="badge bg-secondary">Max ₹2L</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.home_loan_interest }}
+                                </div>
+                                <small class="text-muted">Home Loan Interest</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_nps_contribution" class="form-label">
+                                    Section 80CCD(1B) <span class="badge bg-secondary">Max ₹50K</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.nps_contribution }}
+                                </div>
+                                <small class="text-muted">Additional employee (voluntary) contribution</small>
+                                <small class="text-muted d-block">* Old Regime: Up to ₹50,000 under 80CCD(1B)</small>
+                                <small class="text-muted d-block">* New Regime: Not tax-deductible under 80CCD(1B)</small>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Deductions - Allowed in Both Regimes -->
+                        <div class="section-header mb-3">
+                            <h5 class="text-info"><i class="bi bi-briefcase me-2"></i>Deductions (Both Regimes)</h5>
+                            <small class="text-muted">These deductions apply to both Old and New Tax Regime</small>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="id_employer_nps_contribution" class="form-label">
+                                    Employer NPS (80CCD(2)) <span class="badge bg-secondary">Up to 14% of Salary</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.employer_nps_contribution }}
+                                </div>
+                                <small class="text-muted">Employer contribution to NPS</small>
+                                <small class="text-muted d-block">* Old Regime: 10% of salary (private), 14% (govt)</small>
+                                <small class="text-muted d-block">* New Regime: Up to 14% of salary (Basic + DA) for all employees</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_professional_tax" class="form-label">Professional Tax</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.professional_tax }}
+                                </div>
+                                <small class="text-muted">Deducted by employer</small>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-calculator me-2"></i>Calculate Tax
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar - Live Preview -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow sticky-top" style="top: 80px;">
+                <div class="card-header bg-dark text-white py-3">
+                    <h5 class="mb-0"><i class="bi bi-lightning me-2"></i>Live Preview</h5>
+                </div>
+                <div class="card-body" id="livePreview">
+                    <div class="mb-3">
+                        <label class="text-muted small">Gross Salary</label>
+                        <h4 class="mb-0" id="previewGross">₹0</h4>
+                    </div>
+                    <hr>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="p-3 bg-danger bg-opacity-10 rounded">
+                                <label class="text-muted small">Old Regime</label>
+                                <h5 class="text-danger mb-0" id="previewOld">₹0</h5>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 bg-success bg-opacity-10 rounded">
+                                <label class="text-muted small">New Regime</label>
+                                <h5 class="text-success mb-0" id="previewNew">₹0</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-center p-3 bg-light rounded">
+                        <label class="text-muted small">Recommended</label>
+                        <h5 class="mb-0" id="previewRecommended">-</h5>
+                        <small class="text-success" id="previewSavings">You save: ₹0</small>
+                    </div>
+                </div>
+                <div class="card-footer bg-light">
+                    <small class="text-muted">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Preview updates as you type
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Live calculation preview
+    let debounceTimer;
+    const form = document.getElementById('taxForm');
+    const inputs = form.querySelectorAll('input, select');
+
+    inputs.forEach(input => {
+        input.addEventListener('input', function () {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(updatePreview, 500);
+        });
+    });
+
+    function updatePreview() {
+        const formData = new FormData(form);
+
+        fetch('{% url "quick_calculate" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('previewGross').textContent = '₹' + formatIndian(data.gross_income);
+                    document.getElementById('previewOld').textContent = '₹' + formatIndian(data.old_regime_tax);
+                    document.getElementById('previewNew').textContent = '₹' + formatIndian(data.new_regime_tax);
+                    document.getElementById('previewSavings').textContent = 'You save: ₹' + formatIndian(data.savings);
+
+                    const recommended = data.recommended === 'new' ? 'New Regime ✓' : 'Old Regime ✓';
+                    document.getElementById('previewRecommended').textContent = recommended;
+                    document.getElementById('previewRecommended').className = data.recommended === 'new' ? 'text-success mb-0' : 'text-warning mb-0';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function formatIndian(num) {
+        num = Math.round(num);
+        var str = num.toString();
+        var lastThree = str.substring(str.length - 3);
+        var otherNumbers = str.substring(0, str.length - 3);
+        if (otherNumbers != '')
+            lastThree = ',' + lastThree;
+        return otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+    }
+
+    // Initial preview calculation
+    updatePreview();
+</script>
+{% endblock %}
