@@ -17,13 +17,14 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.VPS_SSH_KEY_B64 }}" | base64 -d > ~/.ssh/taxplanner_deploy
           chmod 600 ~/.ssh/taxplanner_deploy
+          ls -l ~/.ssh/taxplanner_deploy
 
       - name: Deploy over SSH
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key_path: ~/.ssh/taxplanner_deploy
+          key_path: /home/runner/.ssh/taxplanner_deploy
           script: |
             set -e
             cd /var/www/taxplanner
