@@ -159,6 +159,56 @@
         </div>
     </div>
 
+    <!-- New Regime Summary -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0"><i class="bi bi-stars text-success me-2"></i>New Regime Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="p-3 bg-light rounded">
+                                <small class="text-muted">Total Income</small>
+                                <h5 class="mb-0">₹{{ comparison.new_regime.gross_income|floatformat:0 }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 bg-light rounded">
+                                <small class="text-muted">Taxable Income</small>
+                                <h5 class="mb-0">₹{{ comparison.new_regime.taxable_income|floatformat:0 }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 bg-light rounded">
+                                <small class="text-muted">Total Deductions</small>
+                                <h5 class="mb-0">₹{{ comparison.new_regime.deductions.total|floatformat:0 }}</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <h6 class="text-muted mb-2">Standard Deduction (New Regime)</h6>
+                            <p class="mb-1">₹{{ comparison.new_regime.deductions.standard_deduction|floatformat:0|default:"0" }}</p>
+                            <small class="text-muted">Fixed standard deduction for salaried income.</small>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted mb-2">Other allowed deductions</h6>
+                            <ul class="list-unstyled mb-0 text-muted">
+                                <li>Employer NPS (80CCD(2)): ₹{{ comparison.new_regime.deductions.employer_nps_contribution|floatformat:0|default:"0" }}</li>
+                                <li>Professional Tax: ₹{{ comparison.new_regime.deductions.professional_tax|floatformat:0|default:"0" }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Detailed Breakdown -->
     <div class="row">
         <!-- Income Breakdown -->
