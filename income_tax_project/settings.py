@@ -15,7 +15,10 @@ SECRET_KEY = 'django-insecure-your-secret-key-here-change-in-production-x9k2m3n4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = os.getenv(
+    'ALLOWED_HOSTS',
+    'localhost,127.0.0.1,taxplannerindia.com,www.taxplannerindia.com'
+).split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -112,6 +115,10 @@ LOGOUT_REDIRECT_URL = 'home'
 # Security Settings
 SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
 CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    'CSRF_TRUSTED_ORIGINS',
+    'https://taxplannerindia.com,https://www.taxplannerindia.com'
+).split(',')
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 3600  # 1 hour session timeout
 
