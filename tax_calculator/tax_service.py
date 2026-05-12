@@ -34,8 +34,18 @@ class TaxCalculator:
         (Decimal('999999999'), Decimal('0.30')), # Above 10L - 30%
     ]
     
-    # New Regime Tax Slabs FY 2025-26 (Same for all age groups)
-    NEW_REGIME_SLABS = [
+    # New Regime Tax Slabs FY 2024-25 (Budget 2024)
+    NEW_REGIME_SLABS_FY2425 = [
+        (Decimal('300000'), Decimal('0')),      # Up to 3L - Nil
+        (Decimal('700000'), Decimal('0.05')),   # 3L to 7L - 5%
+        (Decimal('1000000'), Decimal('0.10')),  # 7L to 10L - 10%
+        (Decimal('1200000'), Decimal('0.15')),  # 10L to 12L - 15%
+        (Decimal('1500000'), Decimal('0.20')),  # 12L to 15L - 20%
+        (Decimal('999999999'), Decimal('0.30')), # Above 15L - 30%
+    ]
+
+    # New Regime Tax Slabs FY 2025-26 (Budget 2025)
+    NEW_REGIME_SLABS_FY2526 = [
         (Decimal('400000'), Decimal('0')),      # Up to 4L - Nil
         (Decimal('800000'), Decimal('0.05')),   # 4L to 8L - 5%
         (Decimal('1200000'), Decimal('0.10')),  # 8L to 12L - 10%
@@ -44,13 +54,17 @@ class TaxCalculator:
         (Decimal('2400000'), Decimal('0.25')),  # 20L to 24L - 25%
         (Decimal('999999999'), Decimal('0.30')), # Above 24L - 30%
     ]
-    
-    # Rebate under Section 87A
-    OLD_REGIME_REBATE_LIMIT = Decimal('500000')  # 5 Lakh
+
+    # Rebate under Section 87A - Old Regime (same across years)
+    OLD_REGIME_REBATE_LIMIT = Decimal('500000')   # 5 Lakh
     OLD_REGIME_REBATE_AMOUNT = Decimal('12500')
-    
-    NEW_REGIME_REBATE_LIMIT = Decimal('1200000')  # 12 Lakh
-    NEW_REGIME_REBATE_AMOUNT = Decimal('60000')
+
+    # Rebate under Section 87A - New Regime per FY
+    NEW_REGIME_REBATE_LIMIT_FY2425 = Decimal('700000')    # 7 Lakh (FY 2024-25)
+    NEW_REGIME_REBATE_AMOUNT_FY2425 = Decimal('25000')
+
+    NEW_REGIME_REBATE_LIMIT_FY2526 = Decimal('1200000')   # 12 Lakh (FY 2025-26)
+    NEW_REGIME_REBATE_AMOUNT_FY2526 = Decimal('60000')
     
     # Standard Deduction
     STANDARD_DEDUCTION_OLD = Decimal('50000')
@@ -219,24 +233,42 @@ class TaxCalculator:
             'total_tax': total_tax
         }
     
+    def get_new_regime_slabs_and_rebate(self):
+        """Return correct new regime slabs and rebate values based on financial year"""
+        fy = str(self.salary_detail.financial_year.year)
+        if fy == '2024-25':
+            return (
+                self.NEW_REGIME_SLABS_FY2425,
+                self.NEW_REGIME_REBATE_LIMIT_FY2425,
+                self.NEW_REGIME_REBATE_AMOUNT_FY2425,
+            )
+        # Default to FY 2025-26 slabs for 2025-26 and any future years
+        return (
+            self.NEW_REGIME_SLABS_FY2526,
+            self.NEW_REGIME_REBATE_LIMIT_FY2526,
+            self.NEW_REGIME_REBATE_AMOUNT_FY2526,
+        )
+
     def calculate_new_regime_tax(self):
         """Calculate tax under new regime"""
         gross_income = self.calculate_gross_income()
         deductions = self.calculate_new_regime_deductions()
         taxable_income = max(gross_income - deductions['total'], Decimal('0'))
-        
-        # Calculate tax using new regime slabs
-        tax = self.calculate_tax_on_income(taxable_income, self.NEW_REGIME_SLABS)
-        
+
+        slabs, rebate_limit, rebate_amount = self.get_new_regime_slabs_and_rebate()
+
+        # Calculate tax using correct year's slabs
+        tax = self.calculate_tax_on_income(taxable_income, slabs)
+
         # Apply Section 87A rebate for new regime
-        if taxable_income <= self.NEW_REGIME_REBATE_LIMIT:
-            tax = max(tax - self.NEW_REGIME_REBATE_AMOUNT, Decimal('0'))
-        
+        if taxable_income <= rebate_limit:
+            tax = max(tax - rebate_amount, Decimal('0'))
+
         # Calculate Cess
         cess = (tax * self.CESS_RATE).quantize(Decimal('1'), rounding=ROUND_UP)
-        
+
         total_tax = tax + cess
-        
+
         return {
             'gross_income': gross_income,
             'deductions': deductions,
