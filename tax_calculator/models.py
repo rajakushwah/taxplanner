@@ -75,6 +75,12 @@ class FinancialYear(models.Model):
         verbose_name_plural = 'Financial Years'
     
     def __str__(self):
+        # Show both FY and AY so users know exactly which year they're filing for
+        parts = self.year.split('-')
+        if len(parts) == 2:
+            ay_start = int(parts[0]) + 1
+            ay_end   = parts[1] if len(parts[1]) == 2 else parts[1][-2:]
+            return f"FY {self.year}  (AY {ay_start}-{ay_end})"
         return f"FY {self.year}"
 
 

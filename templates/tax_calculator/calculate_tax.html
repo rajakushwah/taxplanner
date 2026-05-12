@@ -9,7 +9,7 @@
             <div class="card border-0 shadow">
                 <div class="card-header bg-primary text-white py-3">
                     <h4 class="mb-0">
-                        <i class="bi bi-calculator me-2"></i>Income Tax Calculator FY 2024-25
+                        <i class="bi bi-calculator me-2"></i>Income Tax Calculator — Below 60 Years
                     </h4>
                 </div>
                 <div class="card-body p-4">
@@ -25,10 +25,13 @@
                             <div class="col-md-6">
                                 <label for="id_financial_year" class="form-label">Financial Year *</label>
                                 {{ form.financial_year }}
+                                <small class="text-muted">Select the FY you want to calculate for</small>
                             </div>
-                            <div class="col-md-6">
-                                <label for="id_age_group" class="form-label">Age Group *</label>
-                                {{ form.age_group }}
+                            <div class="col-md-6 d-flex align-items-center">
+                                <div class="alert alert-info py-2 px-3 mb-0 w-100">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    <small>Currently supports <strong>Below 60 years</strong> age group only</small>
+                                </div>
                             </div>
                         </div>
 

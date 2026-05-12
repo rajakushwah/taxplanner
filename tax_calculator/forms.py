@@ -96,7 +96,7 @@ class SalaryDetailForm(forms.ModelForm):
     
     class Meta:
         model = SalaryDetail
-        exclude = ['user', 'id', 'created_at', 'updated_at', 'standard_deduction']
+        exclude = ['user', 'id', 'created_at', 'updated_at', 'standard_deduction', 'age_group']
         
         widgets = {
             'financial_year': forms.Select(attrs={'class': 'form-select'}),

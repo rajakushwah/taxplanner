@@ -59,13 +59,17 @@
                     <hr>
 
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-4">
                             <small class="text-muted">Tax</small>
-                        <h6>₹{{ comparison.old_regime.tax_before_cess|floatformat:0|indian_comma }}</h6>
+                            <h6>₹{{ comparison.old_regime.tax_before_cess|floatformat:0|indian_comma }}</h6>
                         </div>
-                        <div class="col-6">
+                        <div class="col-4">
+                            <small class="text-muted">Surcharge</small>
+                            <h6>₹{{ comparison.old_regime.surcharge|floatformat:0|indian_comma }}</h6>
+                        </div>
+                        <div class="col-4">
                             <small class="text-muted">Cess (4%)</small>
-                        <h6>₹{{ comparison.old_regime.cess|floatformat:0|indian_comma }}</h6>
+                            <h6>₹{{ comparison.old_regime.cess|floatformat:0|indian_comma }}</h6>
                         </div>
                     </div>
 
@@ -114,13 +118,17 @@
                     <hr>
 
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-4">
                             <small class="text-muted">Tax</small>
-                        <h6>₹{{ comparison.new_regime.tax_before_cess|floatformat:0|indian_comma }}</h6>
+                            <h6>₹{{ comparison.new_regime.tax_before_cess|floatformat:0|indian_comma }}</h6>
                         </div>
-                        <div class="col-6">
+                        <div class="col-4">
+                            <small class="text-muted">Surcharge</small>
+                            <h6>₹{{ comparison.new_regime.surcharge|floatformat:0|indian_comma }}</h6>
+                        </div>
+                        <div class="col-4">
                             <small class="text-muted">Cess (4%)</small>
-                        <h6>₹{{ comparison.new_regime.cess|floatformat:0|indian_comma }}</h6>
+                            <h6>₹{{ comparison.new_regime.cess|floatformat:0|indian_comma }}</h6>
                         </div>
                     </div>
 

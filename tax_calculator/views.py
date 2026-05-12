@@ -120,6 +120,7 @@ def calculate_tax(request):
             with transaction.atomic():
                 salary_detail = form.save(commit=False)
                 salary_detail.user = request.user
+                salary_detail.age_group = 'below_60'
                 
                 # Check if record already exists for this FY
                 existing = SalaryDetail.objects.filter(
@@ -375,7 +376,12 @@ def quick_calculate(request):
         temp.employer_nps_contribution = Decimal(data.get('employer_nps_contribution', '0') or '0')
         temp.professional_tax = Decimal(data.get('professional_tax', '0') or '0')
         temp.age_group = data.get('age_group', 'below_60')
-        
+
+        # Provide financial year so year-aware slab routing works correctly
+        class _FY:
+            year = data.get('financial_year', '2025-26')
+        temp.financial_year = _FY()
+
         calculator = TaxCalculator(temp)
         comparison = calculator.compare_regimes()
         

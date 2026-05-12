@@ -13,27 +13,26 @@ class Command(BaseCommand):
     help = 'Sets up initial data for the Income Tax Calculator'
 
     def handle(self, *args, **options):
-        # Create Financial Years
+        # Create Financial Years — only the two most recent years are supported
+        # FY XXXX-XX  →  AY (XXXX+1)-XX  (Assessment Year is one year after Financial Year)
         financial_years = [
             {
-                'year': '2024-25',
-                'start_date': date(2024, 4, 1),
-                'end_date': date(2025, 3, 31),
-                'is_active': True
-            },
-            {
-                'year': '2023-24',
-                'start_date': date(2023, 4, 1),
-                'end_date': date(2024, 3, 31),
-                'is_active': True
-            },
-            {
-                'year': '2025-26',
+                'year': '2025-26',        # AY 2026-27  (Budget 2025 slabs — current ITR filing)
                 'start_date': date(2025, 4, 1),
                 'end_date': date(2026, 3, 31),
                 'is_active': True
             },
+            {
+                'year': '2026-27',        # AY 2027-28  (current FY — tax planning)
+                'start_date': date(2026, 4, 1),
+                'end_date': date(2027, 3, 31),
+                'is_active': True
+            },
         ]
+
+        # Deactivate older years so they no longer appear in the dropdown
+        from tax_calculator.models import FinancialYear as FY
+        FY.objects.filter(year__in=['2024-25', '2023-24', '2022-23']).update(is_active=False)
         
         for fy_data in financial_years:
             fy, created = FinancialYear.objects.get_or_create(
